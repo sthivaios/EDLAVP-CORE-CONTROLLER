@@ -1,0 +1,8 @@
+# nodeJs modules
+node_modules/
+
+# environment variables
+.env
+
+# jetbrains webstorm workspace settings
+.idea/
