@@ -51,13 +51,13 @@ ALTER TABLE "readings" ADD CONSTRAINT "readings_stationId_fkey" FOREIGN KEY ("st
 -- AddForeignKey
 ALTER TABLE "readings" ADD CONSTRAINT "readings_sensorId_fkey" FOREIGN KEY ("sensorId") REFERENCES "sensors"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
--- Make readings a hypertable (time-series optimized)
+-- Make readings a hypertable
 SELECT create_hypertable('readings', 'time');
 
 -- Add compression after 7 days
 ALTER TABLE readings SET (
     timescaledb.compress,
-    timescaledb.compress_segmentby = 'sensor_id'
+    timescaledb.compress_segmentby = '"sensorId"'
     );
 
 SELECT add_compression_policy('readings', INTERVAL '7 days');
