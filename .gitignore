@@ -6,3 +6,4 @@ node_modules/
 
 # jetbrains webstorm workspace settings
 .idea/
+/src/generated/prisma
