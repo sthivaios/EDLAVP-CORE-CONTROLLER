@@ -8,6 +8,52 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model test {
-  id Int @id @default(autoincrement())
+model Station {
+  id              String    @id // "EDLAVP-XXXXXXXXXXXX"
+  name            String? // user-friendly name like "Lab 1 Station"
+  lastSeen        DateTime?
+  firmwareVersion String?
+  ipAddress       String?
+
+  sensors  Sensor[]
+  readings Reading[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("stations")
+}
+
+model Sensor {
+  id        String  @id @default(cuid())
+  stationId String
+  station   Station @relation(fields: [stationId], references: [id], onDelete: Cascade)
+
+  // sensor identification
+  type    String // "ds18b20", "hdc3020", etc.
+  address String? // for multi-sensor buses (0x28FF123456 for DS18B20) - experimental
+
+  // metadata
+  metric String // "temperature", "humidity", "light"
+  unit   String // "C", "F", "%", "lux"
+
+  readings Reading[]
+
+  @@unique([stationId, type, address])
+  @@map("sensors")
+}
+
+model Reading {
+  time      DateTime
+  stationId String
+  station   Station  @relation(fields: [stationId], references: [id], onDelete: Cascade)
+  sensorId  String
+  sensor    Sensor   @relation(fields: [sensorId], references: [id], onDelete: Cascade)
+
+  value Float
+
+  @@id([time, sensorId])
+  @@index([stationId, time])
+  @@index([sensorId, time])
+  @@map("readings")
 }
