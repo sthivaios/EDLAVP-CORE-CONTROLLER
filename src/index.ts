@@ -1,6 +1,6 @@
 import "dotenv/config";
 import express from "express";
-import { initMqtt } from "./lib/mqtt";
+import { initMqtt } from "./lib/mqtt/mqtt";
 
 const app = express();
 
