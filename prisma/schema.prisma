@@ -31,7 +31,7 @@ model Sensor {
 
   // sensor identification
   type    String // "ds18b20", "hdc3020", etc.
-  address String? // for multi-sensor buses (0x28FF123456 for DS18B20) - experimental
+  address String // for multi-sensor buses (0x28FF123456 for DS18B20) - experimental
 
   // metadata
   metric String // "temperature", "humidity", "light"
