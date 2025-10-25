@@ -1,5 +1,5 @@
 import mqtt from "mqtt";
-import { handleIncomingSensorMessage } from "./mqtt-helpers";
+import { handleIncomingSensorMessage } from "./mqtt-incoming-handler";
 
 let client: mqtt.MqttClient | null = null;
 
@@ -26,8 +26,8 @@ export function initMqtt(): Promise<mqtt.MqttClient> {
       reject(err);
     });
 
-    client.on("message", (topic, message) => {
-      handleIncomingSensorMessage(topic, message.toString());
+    client.on("message", async (topic, message) => {
+      await handleIncomingSensorMessage(JSON.parse(message.toString()));
     });
 
     // Timeout after 10 seconds
