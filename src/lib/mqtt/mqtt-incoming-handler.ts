@@ -60,6 +60,14 @@ export async function handleIncomingSensorMessage(message: MqttMessage) {
       sensorId: sensor.id,
       value: message.readout.value,
     },
+    include: {
+      sensor: {
+        select: {
+          type: true,
+          unit: true,
+        },
+      },
+    },
   });
 
   console.log(reading);
